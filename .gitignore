@@ -1,3 +1,5 @@
 work/**
 result/**
 stdout.log
+scripts/README
+.nextflow*
