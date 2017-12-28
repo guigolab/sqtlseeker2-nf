@@ -7,20 +7,20 @@
 library(optparse)
 library(sQTLseekeR2)
 
-option_list = list(
-  make_option(c("-t", "--transcript_expr"), type = "character",
-              help = "Prepared transcript expression RData file", metavar = "FILE"),
-  make_option(c("-i", "--indexed_geno"), type = "character",
-              help = "Indexed genotype file", metavar = "FILE"),
-  make_option(c("-g", "--gene_location"), type = "character",
-              help = "gene location chunk file", metavar = "FILE"),
-  make_option(c("-o", "--output_file"), type = "character", help = "output file", 
-              metavar = "FILE"),
-  make_option(c("-S", "--Seed"), type = "numeric", help = "Set seed for random processess", 
-              metavar = "NUMERIC", default = 123),
-  make_option(c("-v", "--verbose"), action = "store_true", 
-              help = "print genes and transcripts filtered out [default %default]",
-              default = FALSE)
+option_list <- list(
+    make_option(c("-t", "--transcript_expr"), type = "character",
+                help = "Prepared transcript expression RData file", metavar = "FILE"),
+    make_option(c("-i", "--indexed_geno"), type = "character",
+                help = "Indexed genotype file", metavar = "FILE"),
+    make_option(c("-g", "--gene_location"), type = "character",
+                help = "gene location chunk file", metavar = "FILE"),
+    make_option(c("-o", "--output_file"), type = "character", help = "output file", 
+                metavar = "FILE"),
+    make_option(c("-S", "--Seed"), type = "numeric", help = "Set seed for random processess", 
+                metavar = "NUMERIC", default = 123),
+    make_option(c("-v", "--verbose"), action = "store_true", 
+                help = "print genes and transcripts filtered out [default %default]",
+                default = FALSE)
 )
 
 opt_parser <- OptionParser(option_list = option_list)
@@ -35,8 +35,8 @@ output.f <- opt$output_file
 svqtl<- opt$svqtl
 
 if ( is.null(trans.expr.p.f) || is.null (indexed.geno.f) || is.null(gene.loc.chunk) || is.null (output.f) ){
-  print_help(opt_parser)
-  stop("Missing/not found input files", call.= FALSE)
+    print_help(opt_parser)
+    stop("Missing/not found input files", call.= FALSE)
 }
 
 load(trans.expr.p.f)                                                            # Load tre.df
@@ -53,15 +53,18 @@ set.seed(opt$Seed)
 res.df <- sqtl.seeker.p(tre.df, indexed.geno.f, genes.bed, verbose = opt$verbose)
 
 if (output.f == "permuted_out.1"){
-  if(is.null(res.df)){
-    colnms <- c("geneId", "variants.cis", "LD", "best.snp", "best.nominal.pv", "shape1", 
-                "shape2", "nb.perms", "pv.emp", "pv.emp.beta", "runtime")
-    write.table(t(colnms), file = output.f, col.names = FALSE, row.names = FALSE, quote = FALSE, sep = "\t")
-  }else{
-    write.table(res.df, file = output.f, quote = FALSE, row.names = FALSE, col.names = TRUE, sep = "\t")
-  }
+    if(is.null(res.df)){
+        colnms <- c("geneId", "variants.cis", "LD", "best.snp", "best.nominal.pv", 
+                    "shape1", "shape2", "nb.perms", "pv.emp", "pv.emp.beta", "runtime")
+        write.table(t(colnms), file = output.f, col.names = FALSE, row.names = FALSE, 
+                    quote = FALSE, sep = "\t")
+    }else{
+        write.table(res.df, file = output.f, quote = FALSE, row.names = FALSE, 
+                    col.names = TRUE, sep = "\t")
+    }
 } else {
-  write.table(res.df, file = output.f, quote = FALSE, row.names = FALSE, col.names = FALSE, sep = "\t")
+     write.table(res.df, file = output.f, quote = FALSE, row.names = FALSE, 
+                 col.names = FALSE, sep = "\t")
 }
 
 
