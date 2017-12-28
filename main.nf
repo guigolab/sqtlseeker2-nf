@@ -10,7 +10,7 @@
 
 params.genotype = "data/snps-012coded.tsv.gz"
 params.trexp = "data/transExpression.tsv.gz"
-params.sgroups = "data/sample.groups.tsv"
+params.metadata = "data/metadata.tsv"
 params.genes = "data/genes.bed"
 params.kn = 2
 params.kp = 1
@@ -23,7 +23,7 @@ println """\
          =============================
          genotype: ${params.genotype}
          trexp: ${params.trexp}
-         sgroups: ${params.sgroups}
+         metadata: ${params.metadata}
          genes: ${params.genes}
          kn: ${params.kn}
          kp: ${params.kp}
@@ -37,7 +37,7 @@ println """\
 
 genotype_file = file(params.genotype)
 trexp_file = file(params.trexp)
-sgroups_file = file(params.sgroups)
+metadata_file = file(params.metadata)
 genes_file = file(params.genes)
 
 /*
@@ -45,10 +45,10 @@ genes_file = file(params.genes)
  */
 
 def groups = []
-myReader = sgroups_file.newReader()
+myReader = metadata_file.newReader()
 String line
 while( line = myReader.readLine() ) {
-    def (sampleID, group) = line.tokenize('\t')
+    def (sampleId, indId, group, covariates) = line.tokenize('\t')
     if( group != 'group' ) {
     	groups += group
     }
@@ -109,7 +109,7 @@ process prepare {
     input:
     val group from Channel.from(groups)
     file te_rdata from te_ch 
-    file sgroups from sgroups_file
+    file metadata from metadata_file
     file genes from genes_file
 
     output:
@@ -118,7 +118,7 @@ process prepare {
 
     script:
     """
-    prepare_trexp.R -G $group -t $te_rdata -s $sgroups --gene_location $genes --output_tre tre.df.RData --output_gene genes.ss.bed
+    prepare_trexp.R -g $group -t $te_rdata -m $metadata --gene_location $genes --output_tre tre.df.RData --output_gene genes.ss.bed
 
     """
 }
