@@ -61,7 +61,9 @@ genes.bed <- read.table(genes.bed.f, header = TRUE, as.is = TRUE, sep = "\t")
   
 metadata <- read.table(metadata.f, header = TRUE,
                        as.is = TRUE, sep = "\t")
-subset.samples <- subset(metadata, group == sel.group)$sampleId                     # Select samples of interest            
+
+subset.df <- subset(metadata, group == sel.group, select = c(sampleId, indId))      # Select samples of interest            
+subset.samples <- subset.df$sampleId
 
 ## 4. Prepare transcript expression
 
@@ -77,6 +79,8 @@ tre.df <- prepare.trans.exp(te.df, min.gene.exp = opt$min_gene_expr,
                             min.dispersion = opt$min_dispersion,
                             min.prop = opt$min_proportion,
                             verbose = opt$verbose)                                  # Run
+                                                                                    
+colnames(tre.df)[-c(1:2)] <- subset.df$indId                                        # Rename colnames to individual ID
 
 ## 5. Save result
 
