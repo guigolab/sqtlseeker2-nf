@@ -34,7 +34,7 @@ output.f <- opt$output
 ## 2. Input file: all tests  (nominal and permuted)
 
 res.nominal.df <- as.data.frame(fread(nominal.f, header = TRUE, sep = "\t"), 
-                                stringsAsFactors = FALSE)    # All tests
+                                stringsAsFactors = FALSE)  # All tests
 res.permuted.df <- as.data.frame(fread(permuted.f, header = TRUE, sep = "\t"), 
                                  stringsAsFactors = FALSE)  # All tests
   

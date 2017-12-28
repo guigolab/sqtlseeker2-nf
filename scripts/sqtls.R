@@ -23,7 +23,7 @@ opt <- parse_args(opt_parser)
 ## 2. Input file: all tests  
 
 res.df <- as.data.frame(fread(opt$all_tests, header = TRUE, sep = "\t"), 
-                        stringsAsFactors = F) # All tests
+                        stringsAsFactors = F)  # All tests
 
 ## 3. Get significant sQTLs and output result
 

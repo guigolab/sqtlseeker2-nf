@@ -20,8 +20,8 @@ opt <- parse_args(opt_parser)
 genotype.f <- opt$genotype_file
 
 if ( is.null(genotype.f) ){
-   print_help(opt_parser)
-   stop("File not found: ", genotype.f , call. = FALSE)
+    print_help(opt_parser)
+    stop("File not found: ", genotype.f , call. = FALSE)
 }
 
 ## 3. Index the genotype file

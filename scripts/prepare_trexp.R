@@ -27,7 +27,8 @@ option_list <- list(
     make_option(c("-S", "--Seed"), type = "numeric", help = "Set seed for random processess",
                 metavar = "NUMERIC", default = 123),
     make_option(c("-v", "--verbose"), action = "store_true", 
-                help = "print genes and transcripts filtered out [default %default]", default = FALSE)
+                help = "print genes and transcripts filtered out [default %default]", 
+                default = FALSE)
 )
 
 opt_parser <- OptionParser(option_list = option_list)
@@ -51,30 +52,31 @@ genes.bed <- read.table(genes.bed.f, header = TRUE, as.is = TRUE, sep = "\t")
   
 ## 3. Getting the IDs of the samples in the group of interest
   
-sample.groups <- read.table(sample.groups.f, header = TRUE, as.is = TRUE, sep = "\t")
-subset.samples <- subset(sample.groups, group == sel.group)$sampleId                        # Select samples of interest            
+sample.groups <- read.table(sample.groups.f, header = TRUE, 
+                            as.is = TRUE, sep = "\t")
+subset.samples <- subset(sample.groups, group == sel.group)$sampleId                # Select samples of interest            
 
 ## 4. Prepare transcript expression
 
 load(trans.expr.f) 
-colnames(te.df)[1:2] <- c("trId", "geneId")                                                 # Proper 1,2 colnames
-subset.samples <- subset.samples[subset.samples%in%colnames(te.df)]                         # Get samples that have quantifications 
-te.df <- te.df[, c("trId", "geneId", subset.samples)]                                       # Select subgroup of samples = the ones from the group of interest
-te.df <- subset(te.df, geneId %in% genes.bed$geneId)                                        # Remove from te.df all genes that are not in genes.bed        
+colnames(te.df)[1:2] <- c("trId", "geneId")                                         # Proper 1,2 colnames
+subset.samples <- subset.samples[subset.samples%in%colnames(te.df)]                 # Get samples that have quantifications 
+te.df <- te.df[, c("trId", "geneId", subset.samples)]                               # Select subgroup of samples = the ones from the group of interest
+te.df <- subset(te.df, geneId %in% genes.bed$geneId)                                # Remove from te.df all genes that are not in genes.bed        
 
 set.seed(opt$Seed)
 tre.df <- prepare.trans.exp(te.df, min.gene.exp = opt$min_gene_expr, 
                                    min.transcript.exp = opt$min_transcript_expr, 
-                                   verbose = opt$verbose)                                   # Run
+                                   verbose = opt$verbose)                           # Run
 
 ## 5. Save result
 
-save(tre.df, file = out.tre.f)                                                              # Save tre.df as RData
+save(tre.df, file = out.tre.f)                                                      # Save tre.df as RData
 
 ## 6. Preprocess for split
 
-genes.bed <- subset(genes.bed, geneId %in% tre.df$geneId)                                   # Remove from gene.bed all genes that are not in tre.df
+genes.bed <- subset(genes.bed, geneId %in% tre.df$geneId)                           # Remove from gene.bed all genes that are not in tre.df
 write.table(genes.bed, file = out.gene.f, quote = FALSE,
-            row.names = FALSE, col.names = FALSE, sep = "\t")                               # Write gene list
+            row.names = FALSE, col.names = FALSE, sep = "\t")                       # Write gene list
 
 #### END
