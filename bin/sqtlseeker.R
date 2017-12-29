@@ -62,7 +62,8 @@ gene.loc.chunk <- opt$gene_location
 covariates.f <- opt$covariates  
 output.f <- opt$output_file
 
-if ( is.null(trans.expr.p.f) || is.null (indexed.geno.f) || is.null(gene.loc.chunk) || is.null (output.f) ){
+if ( is.null(trans.expr.p.f) || is.null (indexed.geno.f) || 
+     is.null(gene.loc.chunk) || is.null (output.f) ){
     print_help(opt_parser)
     stop("Missing/not found input files", call.= FALSE)
 }

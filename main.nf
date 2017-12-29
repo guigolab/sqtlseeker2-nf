@@ -203,7 +203,7 @@ if (params.mode == "permuted") {
         script:
         """
         res=\$(echo $chunk | sed 's/_in/_out/')
-        sqtlseeker.p.R -t $tre_rdata -i $indexed_geno -g $chunk -o \$res
+        sqtlseeker.p.R -t $tre_rdata -i $indexed_geno -l $chunk -c $cov_rdata -o \$res
 
         """
     }    
