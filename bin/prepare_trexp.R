@@ -108,10 +108,13 @@ if(opt$covariates) {
         }
     }
     types <- unlist(lapply(covariates.df, class))
-    if (verbose) {
-        message("Covariate types: ", 
-                paste(names(types), types, sep="|", collapse = ", "))
+    if (opt$verbose) {
+        message("Covariate types:\n", 
+                paste(names(types), types, sep=": ", collapse = ", "))
     }
+    save(covariates.df, file = out.cov.f) 
+} else {
+    covariates.df <- NULL
     save(covariates.df, file = out.cov.f) 
 }                                                                                   
 
