@@ -15,6 +15,9 @@ option_list <- list(
     make_option(c("-m", "--metadata"), type = "character",
                 help = "file defining sample groups (sampleId, indId, group, [covariates])", 
                 metavar = "FILE"),
+    make_option(c("-c", "--covariates"), action = "store_true", 
+                help = "prepare covariate file [default %default]", 
+                default = FALSE),
     make_option(c("-l", "--gene_location"), type = "character",
                 help = "gene location file (chr, start, end, id)", metavar = "FILE"),
     make_option(c("-e", "--min_gene_expr"), type = "numeric", default = 1,
@@ -30,7 +33,9 @@ option_list <- list(
     make_option(c("-o1", "--output_tre"), type = "character",
                 help = "preprocessed transcript expression file", metavar = "FILE"),
     make_option(c("-o2", "--output_gene"), type = "character",
-                help = "preprocessed transcript expression file", metavar = "FILE"),
+                help = "updated gene location file", metavar = "FILE"),
+    make_option(c("-o3", "--output_cov"), type = "character",
+                help = "prepared covariate file", metavar = "FILE"),
     make_option(c("-s", "--seed"), type = "numeric", help = "Set seed for random processess",
                 metavar = "NUMERIC", default = 123),
     make_option(c("-v", "--verbose"), action = "store_true", 
@@ -44,13 +49,15 @@ opt <- parse_args(opt_parser)
 ## 2. Input files: transcript expression, sample groups, gene location
   
 trans.expr.f <- opt$transcript_expr                        
-metadata.f <- opt$metadata                  
+metadata.f <- opt$metadata
 genes.bed.f <- opt$gene_location
 sel.group <- opt$group
 out.tre.f <- opt$output_tre
 out.gene.f <- opt$output_gene
+out.cov.f <- opt$output_cov
 
-if ( is.null(trans.expr.f) || is.null(metadata.f) || is.null(genes.bed.f) ){
+if ( is.null(trans.expr.f) || is.null(metadata.f) || is.null(genes.bed.f) || 
+     is.null(out.tre.f) || is.null (out.gene.f) ){
     print_help(opt_parser)
     stop("Missing/not found input files", call.= FALSE)
 }
@@ -62,7 +69,8 @@ genes.bed <- read.table(genes.bed.f, header = TRUE, as.is = TRUE, sep = "\t")
 metadata <- read.table(metadata.f, header = TRUE,
                        as.is = TRUE, sep = "\t")
 
-subset.samples <- subset(metadata, group == sel.group)$sampleId                     # Select samples of interest            
+subset.df <- subset(metadata, group == sel.group)                                   # Select samples of interest            
+subset.samples <- subset.df$sampleId
 
 ## 4. Prepare transcript expression
 
@@ -78,12 +86,42 @@ tre.df <- prepare.trans.exp(te.df, min.gene.exp = opt$min_gene_expr,
                             min.dispersion = opt$min_dispersion,
                             min.prop = opt$min_proportion,
                             verbose = opt$verbose)                                  # Run
-                                                                                
-## 5. Save result
+
+## 5. Prepare covariate file
+
+if(opt$covariates) {
+    if ( is.null(out.cov.f) ){
+        print_help(opt_parser)
+        stop("Missing output covariate file", call.= FALSE)
+    }
+    covariates.df <- subset.df[, setdiff(colnames(subset.df), 
+                                         c("sampleId", "indId", "group"))]
+    rownames(covariates.df) <- subset.df$indId
+    for(i in 1:ncol(covariates.df)){
+        typ <- class(covariates.df[, i])
+        if(typ == "character"){
+            covariates.df[, i] <- as.factor(covariates.df[, i])
+        } else if (typ == "numeric"){
+            next
+        } else {
+            stop ("Covariates should be either 'numeric' or 'character'")
+        }
+    }
+    types <- unlist(lapply(covariates.df, class))
+    if (verbose) {
+        message("Covariate types: ", 
+                paste(names(types), types, sep="|", collapse = ", "))
+    }
+    save(covariates.df, file = out.cov.f) 
+}                                                                                   
+
+colnames(tre.df)[-c(1:2)] <- subset.df$indId                                        # Rename colnames to individual ID
+                                                        
+## 6. Save result
 
 save(tre.df, file = out.tre.f)                                                      # Save tre.df as RData
 
-## 6. Preprocess for split
+## 7. Preprocess for split
 
 genes.bed <- subset(genes.bed, geneId %in% tre.df$geneId)                           # Remove from gene.bed all genes that are not in tre.df
 write.table(genes.bed, file = out.gene.f, quote = FALSE,
