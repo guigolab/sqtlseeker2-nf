@@ -48,7 +48,7 @@ option_list <- list(
                 metavar = "NUMERIC", default = 123),
     make_option(c("-v", "--verbose"), action = "store_true", 
                 help = "print progress (geneId, SNP suitability, etc.) [default %default]",
-                default = FALSE)
+                default = TRUE)
 )
 
 opt_parser <- OptionParser(option_list = option_list)

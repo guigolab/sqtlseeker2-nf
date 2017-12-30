@@ -176,7 +176,7 @@ process nominal_mtc {
  
     script:
     """
-    sqtls.R -a all-tests.nominal.tsv -f ${params.fdr} -o sqtls-${params.fdr}fdr.nominal.tsv
+    sqtls.R -n all-tests.nominal.tsv -f ${params.fdr} --rm_svqtl -o sqtls-${params.fdr}fdr.nominal.tsv
 
     """       
 }
@@ -226,7 +226,7 @@ if (params.mode == "permuted") {
  
         script:
         """
-        sqtls.p.R -n all-tests.nominal.tsv -p all-tests.permuted.tsv -f ${params.fdr} -o sqtls-${params.fdr}fdr.permuted.tsv
+        sqtls.p.R -n all-tests.nominal.tsv -p all-tests.permuted.tsv -f ${params.fdr} --rm_svqtl -o sqtls-${params.fdr}fdr.permuted.tsv
 
         """
     }
