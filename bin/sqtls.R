@@ -36,8 +36,8 @@ nominal.f <- opt$nominal
 output.f <- opt$output
 
 if ( is.null(nominal.f) ){
-  print_help(opt_parser)
-  stop("Missing/not found input file", call.= FALSE)
+    print_help(opt_parser)
+    stop("Missing/not found input file", call.= FALSE)
 }
 
 ## 2. Input file: all tests  

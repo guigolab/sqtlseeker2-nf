@@ -36,8 +36,8 @@ permuted.f <- opt$permuted
 output.f <- opt$output
 
 if ( is.null(nominal.f) || is.null(permuted.f) || is.null(output.f) ){
-  print_help(opt_parser)
-  stop("Missing/not found input files", call.= FALSE)
+    print_help(opt_parser)
+    stop("Missing/not found input files", call.= FALSE)
 }
 
 ## 2. Input file: all tests  (nominal and permuted)
