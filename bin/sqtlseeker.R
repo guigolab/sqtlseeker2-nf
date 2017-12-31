@@ -61,6 +61,11 @@ indexed.geno.f <- opt$indexed_geno
 gene.loc.chunk <- opt$gene_location
 covariates.f <- opt$covariates  
 output.f <- opt$output_file
+if(is.na(opt$ld)){
+    LD <- NULL
+}else{
+    LD <- opt$ld
+}
 
 if ( is.null(trans.expr.p.f) || is.null (indexed.geno.f) || 
      is.null(gene.loc.chunk) || is.null (output.f) ){
@@ -86,7 +91,7 @@ res.df <- sqtl.seeker(tre.df, indexed.geno.f, genes.bed,
                       nb.perm.max.svQTL = opt$nb_perm_max_svqtl,
                       svQTL = opt$svqtl, asympt = opt$asympt,
                       min.nb.ind.geno = opt$min_nb_ind_geno,
-                      ld.filter = opt$ld, verbose = opt$verbose)
+                      ld.filter = LD, verbose = opt$verbose)
 
 write.table(res.df, file = output.f, quote = FALSE,
             row.names = FALSE, 

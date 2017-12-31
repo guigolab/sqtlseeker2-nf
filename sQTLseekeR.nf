@@ -1,6 +1,6 @@
 /*
  * sQTL mapping pipeline
- * vs 0.1
+ * vs 1.0
  * Diego Garrido Martin 
  */
 
@@ -12,11 +12,15 @@ params.genotype = "data/snps-012coded.tsv.gz"
 params.trexp = "data/transExpression.tsv.gz"
 params.metadata = "data/metadata.tsv"
 params.genes = "data/genes.bed"
+params.mode = "nominal"
 params.covariates = false
 params.kn = 2
 params.kp = 1
 params.fdr = 0.05
-params.mode = "nominal"
+params.svqtl = false
+params.ld = "NULL" 
+params.min_md = 0.05
+params.max_perm = 1000 
 
 println """\
          =============================
@@ -26,11 +30,15 @@ println """\
          trexp: ${params.trexp}
          metadata: ${params.metadata}
          genes: ${params.genes}
+         mode: ${params.mode}         
          covariates: ${params.covariates}
          kn: ${params.kn}
          kp: ${params.kp}
          fdr: ${params.fdr}
-         mode: ${params.mode}"""
+         svqtl: ${params.svqtl}
+         ld: ${params.ld}
+         min_md: ${params.min_md}
+         max_perm: ${params.max_perm}"""
          .stripIndent()
 
 /*
@@ -154,9 +162,16 @@ process nominal_test {
     set val(group), file('nominal_out.*') into nominal_out_ch 
  
     script: 
+    if (params.svqtl == false)
     """
     res=\$(echo $chunk | sed 's/_in/_out/')
-    sqtlseeker.R -t $tre_rdata -i $indexed_geno -l $chunk -c $cov_rdata --asympt -o \$res
+    sqtlseeker.R -t $tre_rdata -i $indexed_geno -l $chunk -c $cov_rdata --asympt --ld ${params.ld} -o \$res 
+
+    """
+    else
+    """
+    res=\$(echo $chunk | sed 's/_in/_out/')
+    sqtlseeker.R -t $tre_rdata -i $indexed_geno -l $chunk -c $cov_rdata --asympt --svqtl --ld ${params.ld} -o \$res
 
     """
 }
@@ -176,7 +191,7 @@ process nominal_mtc {
  
     script:
     """
-    sqtls.R -n all-tests.nominal.tsv -f ${params.fdr} --rm_svqtl -o sqtls-${params.fdr}fdr.nominal.tsv
+    sqtls.R -n all-tests.nominal.tsv -f ${params.fdr} --rm_svqtl --md_min ${params.min_md} -o sqtls-${params.fdr}fdr.nominal.tsv
 
     """       
 }
@@ -203,7 +218,7 @@ if (params.mode == "permuted") {
         script:
         """
         res=\$(echo $chunk | sed 's/_in/_out/')
-        sqtlseeker.p.R -t $tre_rdata -i $indexed_geno -l $chunk -c $cov_rdata -o \$res
+        sqtlseeker.p.R -t $tre_rdata -i $indexed_geno -l $chunk -c $cov_rdata -M ${params.max_perm} -o \$res
 
         """
     }    
@@ -226,7 +241,7 @@ if (params.mode == "permuted") {
  
         script:
         """
-        sqtls.p.R -n all-tests.nominal.tsv -p all-tests.permuted.tsv -f ${params.fdr} --rm_svqtl -o sqtls-${params.fdr}fdr.permuted.tsv
+        sqtls.p.R -n all-tests.nominal.tsv -p all-tests.permuted.tsv -f ${params.fdr} --rm_svqtl --md_min ${params.min_md} -o sqtls-${params.fdr}fdr.permuted.tsv
 
         """
     }
