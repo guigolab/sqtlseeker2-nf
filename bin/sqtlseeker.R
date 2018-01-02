@@ -61,7 +61,7 @@ indexed.geno.f <- opt$indexed_geno
 gene.loc.chunk <- opt$gene_location
 covariates.f <- opt$covariates  
 output.f <- opt$output_file
-if(is.na(opt$ld)){
+if(opt$ld == 0){
     LD <- NULL
 }else{
     LD <- opt$ld

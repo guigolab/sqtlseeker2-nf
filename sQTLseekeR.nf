@@ -18,7 +18,7 @@ params.kn = 2
 params.kp = 1
 params.fdr = 0.05
 params.svqtl = false
-params.ld = "NULL" 
+params.ld = 0 
 params.min_md = 0.05
 params.max_perm = 1000 
 

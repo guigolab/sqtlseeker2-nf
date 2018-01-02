@@ -1,5 +1,5 @@
 work/**
 result/**
+singularity/**
 stdout.log
-bin/README
 .nextflow*
