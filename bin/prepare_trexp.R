@@ -10,7 +10,7 @@ library(sQTLseekeR2)
   
 option_list <- list(
     make_option(c("-g", "--group"), type = "character", 
-                help = "select sampleIds belonging to group", metavar = "SELECTION"),
+                help = "select sampleIds belonging to group", metavar = "CHARACTER"),
     make_option(c("-t", "--transcript_expr"), type = "character", 
                 help = "transcript expression file", metavar = "FILE"),
     make_option(c("-m", "--metadata"), type = "character",
