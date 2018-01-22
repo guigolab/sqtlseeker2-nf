@@ -5,6 +5,7 @@
 ## 1. Load libraries and arguments
 
 library(optparse)
+library(data.table)
 library(sQTLseekeR2)
   
 option_list <- list(
@@ -74,7 +75,11 @@ subset.samples <- subset.df$sampleId
 
 ## 4. Prepare transcript expression
 
-load(trans.expr.f) 
+if( grepl("\\.gz$", trans.expr.f) ){
+    trans.expr.f <- paste0("zcat < '", trans.expr.f, "'") 
+}
+
+te.df <- as.data.frame(fread(input = trans.expr.f, header = TRUE, sep = "\t"))
 colnames(te.df)[1:2] <- c("trId", "geneId")                                         # Proper 1,2 colnames
 subset.samples <- subset.samples[subset.samples%in%colnames(te.df)]                 # Get samples that have quantifications 
 te.df <- te.df[, c("trId", "geneId", subset.samples)]                               # Select subgroup of samples = the ones from the group of interest

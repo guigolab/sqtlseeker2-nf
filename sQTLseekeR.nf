@@ -92,24 +92,7 @@ index_ch.into{index2nominal_ch; index2permuted_ch}
 
 /*
  *  2. Preprocess input data
- *     a. make RData from transcript quantifications for faster access
- *     b. preprocess transcript expression matrix
  */
-
-process make_RData {
-
-    input:
-    file trexp from trexp_file
-
-    output:
-    file 'te.df.RData' into te_ch
-
-    script:
-    """
-    make_RData.R -i $trexp -o te.df.RData -H
-
-    """
-}
 
 process prepare {
 
@@ -118,7 +101,7 @@ process prepare {
 
     input:
     val group from Channel.from(groups)
-    file te_rdata from te_ch 
+    file te from trexp_file 
     file metadata from metadata_file
     file genes from genes_file
 
@@ -130,12 +113,12 @@ process prepare {
     script:
     if (params.covariates == true)
     """
-    prepare_trexp.R --group $group -t $te_rdata -m $metadata --gene_location $genes --covariates --output_tre tre.df.RData --output_gene genes.ss.bed --output_cov covariates.df.RData
+    prepare_trexp.R --group $group -t $te -m $metadata --gene_location $genes --covariates --output_tre tre.df.RData --output_gene genes.ss.bed --output_cov covariates.df.RData
 
     """
     else
     """
-    prepare_trexp.R --group $group -t $te_rdata -m $metadata --gene_location $genes --output_tre tre.df.RData --output_gene genes.ss.bed --output_cov covariates.df.RData
+    prepare_trexp.R --group $group -t $te -m $metadata --gene_location $genes --output_tre tre.df.RData --output_gene genes.ss.bed --output_cov covariates.df.RData
 
     """
 }
