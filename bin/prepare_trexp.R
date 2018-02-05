@@ -106,7 +106,7 @@ if(opt$covariates) {
         typ <- class(covariates.df[, i])
         if(typ == "character"){
             covariates.df[, i] <- as.factor(covariates.df[, i])
-        } else if (typ == "numeric"){
+        } else if (typ == "numeric" || typ == "integer"){
             next
         } else {
             stop ("Covariates should be either 'numeric' or 'character'")
