@@ -100,14 +100,14 @@ if(opt$covariates) {
         stop("Missing output covariate file", call.= FALSE)
     }
     covariates.df <- subset.df[, setdiff(colnames(subset.df), 
-                                         c("sampleId", "indId", "group"))]
+                                         c("sampleId", "indId", "group")), drop = FALSE]
     rownames(covariates.df) <- subset.df$indId
     all.na <- unlist(lapply(covariates.df, function(x){all(is.na(x))}))
     if (opt$verbose && sum(all.na) > 0){
         warning(sprintf("Covariates with NA values for all individuals were removed: %s",
                         paste(names(which(all.na)), collapse = ", ")))
     }
-    covariates.df <- covariates.df[, !all.na]
+    covariates.df <- covariates.df[, !all.na, drop = FALSE]
     for(i in 1:ncol(covariates.df)){
         typ <- class(covariates.df[, i])
         if(typ == "character"){
