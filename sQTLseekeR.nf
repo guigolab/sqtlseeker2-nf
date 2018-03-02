@@ -160,7 +160,7 @@ process nominal_test {
 }
 
 nominal_out_ch.collectFile(sort: { it.name }).map() {[it.name, it]}.into{all_nominal_tests_ch1; all_nominal_tests_ch2}
-  
+
 process nominal_mtc {
 
     publishDir "result/groups/$group"

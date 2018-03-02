@@ -1,4 +1,9 @@
 work/**
 result/**
 singularity/**
+old/**
+gtex/**
+docker/**
+bsc/**
 .nextflow*
+
