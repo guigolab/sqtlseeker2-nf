@@ -80,7 +80,7 @@ genes <- genes.bed$geneId                                                       
 tre.df <- subset(tre.df, geneId %in% genes)                                     # Subset tre.df
 load(covariates.f)                                                              # Load covariates.df
 
-## 4. Run association test and write result
+## 4. Run association test and write result (add appropriate colnames if needed)
 
 set.seed(opt$seed)
 res.df <- sqtl.seeker(tre.df, indexed.geno.f, genes.bed,
@@ -93,9 +93,35 @@ res.df <- sqtl.seeker(tre.df, indexed.geno.f, genes.bed,
                       min.nb.ind.geno = opt$min_nb_ind_geno,
                       ld.filter = LD, verbose = opt$verbose)
 
-write.table(res.df, file = output.f, quote = FALSE,
-            row.names = FALSE, 
-            col.names = ifelse(output.f == "nominal_out.1", TRUE, FALSE), 
-            sep = "\t")
+if (output.f == "nominal_out.1"){
+    if(is.null(res.df)){
+        if(opt$asympt){
+            colnms <- c("geneId", "snpId", "F", "nb.groups", "md", 
+                        "tr.first", "tr.second", "info", "pv")
+            if(opt$svqtl){
+              colnms <- c(colnms, c("F.svQTL", "nb.perms.svQTL", "pv.svQTL"))
+            }
+        } else {
+            colnms <- c("geneId", "snpId", "F", "nb.groups", "md", 
+                        "tr.first", "tr.second", "info", "nb.perms","pv")
+            if(opt$svqtl){
+              colnms <- c("geneId", "snpId", "F", "nb.groups", "md",
+                          "tr.first", "tr.second", "info", "F.svQTL", 
+                          "nb.perms", "pv", "nb.perms.svQTL", "pv.svQTL")
+            }
+        }
+        if(!is.null(LD)){
+            colnms <- c(colnms, "LD")
+        }
+        write.table(t(colnms), file = output.f, col.names = FALSE, row.names = FALSE,
+                    quote = FALSE, sep = "\t")
+    } else {
+        write.table(res.df, file = output.f, quote = FALSE, row.names = FALSE,
+                    col.names = TRUE, sep = "\t")
+    }
+} else {
+    write.table(res.df, file = output.f, quote = FALSE, row.names = FALSE,
+                col.names = FALSE, sep = "\t")
+}
 
 #### END
