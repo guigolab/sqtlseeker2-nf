@@ -2,8 +2,8 @@ work/**
 result/**
 singularity/**
 old/**
+bsc/**
 gtex/**
 docker/**
-bsc/*
 .nextflow*
 
