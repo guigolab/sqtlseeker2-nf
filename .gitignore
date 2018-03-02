@@ -4,6 +4,6 @@ singularity/**
 old/**
 gtex/**
 docker/**
-bsc/**
+bsc/*
 .nextflow*
 
