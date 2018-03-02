@@ -113,12 +113,12 @@ process prepare {
     script:
     if (params.covariates == true)
     """
-    prepare_trexp.R --group $group -t $te -m $metadata --gene_location $genes --covariates --output_tre tre.df.RData --output_gene genes.ss.bed --output_cov covariates.df.RData
+    prepare_trexp.R --group "$group" -t $te -m $metadata --gene_location $genes --covariates --output_tre tre.df.RData --output_gene genes.ss.bed --output_cov covariates.df.RData
 
     """
     else
     """
-    prepare_trexp.R --group $group -t $te -m $metadata --gene_location $genes --output_tre tre.df.RData --output_gene genes.ss.bed --output_cov covariates.df.RData
+    prepare_trexp.R --group "$group" -t $te -m $metadata --gene_location $genes --output_tre tre.df.RData --output_gene genes.ss.bed --output_cov covariates.df.RData
 
     """
 }
