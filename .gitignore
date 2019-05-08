@@ -1,9 +1,5 @@
-work/**
-result/**
-singularity/**
-old/**
-bsc/**
-gtex/**
-docker/**
+work
+result
+singularity
 .nextflow*
 
