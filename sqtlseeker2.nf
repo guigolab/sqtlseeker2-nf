@@ -178,7 +178,6 @@ index_ch.into{index2nominal_ch; index2permuted_ch}
 
 process prepare {
 
-    publishDir "${params.dir}/groups/$group" 
     tag { group }
 
     input:
