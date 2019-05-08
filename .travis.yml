@@ -1,0 +1,17 @@
+dist: trusty
+sudo: required
+
+services:
+  - docker
+
+language: java
+
+jdk:
+  - oraclejdk8
+    
+before_script:
+  - docker pull dgarrimar/sqtlseeker2-nf@sha256:9ddae31aaf8f70f02cd24d3447f4fa3517494da87e12674484d25fe7cf3dc16b
+  - curl -fsSL get.nextflow.io | bash && mv nextflow $HOME/bin
+
+script:
+  - ./ci/ci.sh run && ./ci/ci.sh validate

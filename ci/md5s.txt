@@ -1,0 +1,4 @@
+127fd3966703bf8246f619266657fd04  *ci/groups/tissue1/all-tests.nominal.tsv
+200c3a7120c5bf281ac6a7c77beb22db  *ci/groups/tissue1/sqtls-0.05fdr.nominal.tsv
+127fd3966703bf8246f619266657fd04  *ci/groups/tissue2/all-tests.nominal.tsv
+200c3a7120c5bf281ac6a7c77beb22db  *ci/groups/tissue2/sqtls-0.05fdr.nominal.tsv
