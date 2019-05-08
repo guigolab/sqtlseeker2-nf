@@ -20,55 +20,123 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * 0.a Define parameters
- */
+
+// Define parameters (test run)
 
 params.genotype = "data/snps-012coded.tsv.gz"
 params.trexp = "data/transExpression.tsv.gz"
 params.metadata = "data/metadata.tsv"
 params.genes = "data/genes.bed"
+params.dir = "result"
+
+
+// Define parameters
+
 params.mode = "nominal"
 params.covariates = false
-params.kn = 2
+params.kn = 10
 params.kp = 1
 params.fdr = 0.05
 params.svqtl = false
-params.ld = 0 
+params.ld = 0
 params.min_md = 0.05
 params.max_perm = 1000 
+params.help = false
 
-println """\
-         =============================
-         s Q T L s e e k e R - N F   
-         =============================
-         genotype: ${params.genotype}
-         trexp: ${params.trexp}
-         metadata: ${params.metadata}
-         genes: ${params.genes}
-         mode: ${params.mode}         
-         covariates: ${params.covariates}
-         kn: ${params.kn}
-         kp: ${params.kp}
-         fdr: ${params.fdr}
-         svqtl: ${params.svqtl}
-         ld: ${params.ld}
-         min_md: ${params.min_md}
-         max_perm: ${params.max_perm}"""
-         .stripIndent()
 
-/*
- *  0.b Create file objects given parameters
- */
+// Print usage
+
+if (params.help) {
+  log.info ''
+  log.info 'sqtlseeker2-nf ~ A pipeline for splicing QTL mapping'
+  log.info '----------------------------------------------------'
+  log.info 'Run sQTLseekeR2 on a set of data.'
+  log.info ''
+  log.info 'Usage: '
+  log.info "    ${workflow.projectDir.baseName} [options]"
+  log.info ''
+  log.info 'Options:'
+  log.info '--genotype GENOTYPE_FILE    the genotype file'
+  log.info '--trexp EXPRESSION_FILE     the transcript expression file'
+  log.info '--metadata METADATA_FILE    the metadata file'
+  log.info '--genes GENES_FILE          the gene location file' 
+  log.info '--dir DIRECTORY             the output directory'
+  log.info '--mode MODE                 the run mode: nominal or permuted (default: nominal)'
+  log.info '--covariates COVARIATES     include covariates in the model (default: false)'
+  log.info '--min_md MIN_MD             minimum effect size reported (default: 0.05)'
+  log.info '--svqtl SVQTLS              report svQTLs (default: false)'
+  log.info ''
+  log.info 'Additional parameters for mode = nominal:'
+  log.info '--ld LD                     threshold for LD-based variant clustering (default: 0, no clustering)'
+  log.info '--kn KN                     number of genes per batch in nominal pass (default: 10)'
+  log.info '--fdr FDR                   False Discovery Rate (default: 0.05)'
+  log.info ''
+  log.info 'Additional parameters for mode = nominal:'
+  log.info '--kp KP                     number of genes per batch in permuted pass (default: 10)'
+  log.info '--max_perm MAX_PERM         maximum number of permutations (default: 1000)'
+  log.info '--fdr FDR                   False Discovery Rate (default: 0.05)'
+  log.info ''
+  exit 1
+}
+
+
+// Check mandatory options
+
+if (!params.genotype) {
+    exit 1, "Genotype file not specified."
+} else if (!params.trexp){
+    exit 1, "Transcript expression file not specified."
+} else if (!params.metadata){
+    exit 1, "Metadata file not specified."
+} else if (!params.genes){
+    exit 1, "Gene location file not specified."
+}
+
+ 
+// Print selected options
+
+log.info ""
+log.info "sqtlseeker2-nf ~ A pipeline for splicing QTL mapping"
+log.info ""
+log.info "General parameters"
+log.info '------------------'
+log.info "Genotype file                      : ${params.genotype}"
+log.info "Transcript expression file         : ${params.trexp}"
+log.info "Metadata file                      : ${params.metadata}"
+log.info "Gene location file                 : ${params.genes}"
+log.info "Output directory                   : ${params.dir}"
+log.info "Run mode                           : ${params.mode}"
+log.info "Covariates                         : ${params.covariates}"
+log.info "Min. effect size                   : ${params.min_md}"
+log.info "Report svQTLs                      : ${params.svqtl}"
+log.info ""
+
+if(params.mode == "nominal"){
+  log.info 'Additional parameters for mode = nominal'
+  log.info '----------------------------------------'
+  log.info "LD-based clustering threshold      : ${params.ld}"
+  log.info "Genes/batch in nominal pass        : ${params.kn}"
+  log.info "FDR level                          : ${params.fdr}"
+  log.info ""
+} else if(params.mode == "permuted"){
+  log.info 'Additional parameters for mode = permuted'
+  log.info '-----------------------------------------'
+  log.info "Genes/batch in permuted pass       : ${params.kp}"
+  log.info "Max. number of permutations        : ${params.max_perm}"
+  log.info "FDR level                          : ${params.fdr}"
+  log.info ""
+}
+
+
+// Create file objects given parameters
 
 genotype_file = file(params.genotype)
 trexp_file = file(params.trexp)
 metadata_file = file(params.metadata)
 genes_file = file(params.genes)
 
-/*
- *  0.c Generate the 'groups' list
- */
+
+// Obtain the 'groups' list
 
 def groups = []
 myReader = metadata_file.newReader()
@@ -85,9 +153,8 @@ String show = groups.join(", ")
 
 println "groups: $show\n"
 
-/*
- *  1. Index genotype file
- */
+
+// Index genotype file
 
 process index {
 
@@ -106,13 +173,12 @@ process index {
 
 index_ch.into{index2nominal_ch; index2permuted_ch}
 
-/*
- *  2. Preprocess input data
- */
+
+// Preprocess input data
 
 process prepare {
 
-    publishDir "result/groups/$group" 
+    publishDir "${params.dir}/groups/$group" 
     tag { group }
 
     input:
@@ -143,9 +209,8 @@ tre_ch.into {tre2nominal_ch; tre2permuted_ch}
 genes_ch.into {genes2nominal_ch; genes2permuted_ch} 
 cov_ch.into {cov2nominal_ch; cov2permuted_ch}
 
-/*
- *  3. Run sQTLseekeR (nominal)
- */
+
+// Run sQTLseekeR2 (nominal)
 
 tre2nominal_ch.join(cov2nominal_ch).combine(genes2nominal_ch.splitText( by: params.kn, file: "nominal_in" ), by: 0).set{nominal_in_ch}
 
@@ -179,7 +244,7 @@ nominal_out_ch.collectFile(sort: { it.name }).map() {[it.name, it]}.into{all_nom
 
 process nominal_mtc {
 
-    publishDir "result/groups/$group"
+    publishDir "${params.dir}/groups/$group"
     tag { group }
 
     input: 
@@ -195,9 +260,8 @@ process nominal_mtc {
     """       
 }
 
-/*
- *  4. Run sQTLseekeR (permuted)
- */
+
+// Run sQTLseekeR2 (permuted)
  
 if (params.mode == "permuted") {
 
@@ -228,7 +292,7 @@ if (params.mode == "permuted") {
 
     process permuted_mtc {
 
-        publishDir "result/groups/$group"
+        publishDir "${params.dir}/groups/$group"
         tag { group }
 
         input:
