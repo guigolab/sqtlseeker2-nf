@@ -63,18 +63,17 @@ if (params.help) {
   log.info '--dir DIRECTORY             the output directory'
   log.info '--mode MODE                 the run mode: nominal or permuted (default: nominal)'
   log.info '--covariates COVARIATES     include covariates in the model (default: false)'
+  log.info '--fdr FDR                   false discovery rate level (default: 0.05)'
   log.info '--min_md MIN_MD             minimum effect size reported (default: 0.05)'
   log.info '--svqtl SVQTLS              report svQTLs (default: false)'
   log.info ''
   log.info 'Additional parameters for mode = nominal:'
   log.info '--ld LD                     threshold for LD-based variant clustering (default: 0, no clustering)'
   log.info '--kn KN                     number of genes per batch in nominal pass (default: 10)'
-  log.info '--fdr FDR                   False Discovery Rate (default: 0.05)'
   log.info ''
-  log.info 'Additional parameters for mode = nominal:'
+  log.info 'Additional parameters for mode = permuted:'
   log.info '--kp KP                     number of genes per batch in permuted pass (default: 10)'
   log.info '--max_perm MAX_PERM         maximum number of permutations (default: 1000)'
-  log.info '--fdr FDR                   False Discovery Rate (default: 0.05)'
   log.info ''
   exit 1
 }
@@ -107,6 +106,7 @@ log.info "Gene location file                 : ${params.genes}"
 log.info "Output directory                   : ${params.dir}"
 log.info "Run mode                           : ${params.mode}"
 log.info "Covariates                         : ${params.covariates}"
+log.info "FDR level                          : ${params.fdr}"
 log.info "Min. effect size                   : ${params.min_md}"
 log.info "Report svQTLs                      : ${params.svqtl}"
 log.info ""
@@ -116,14 +116,12 @@ if(params.mode == "nominal"){
   log.info '----------------------------------------'
   log.info "LD-based clustering threshold      : ${params.ld}"
   log.info "Genes/batch in nominal pass        : ${params.kn}"
-  log.info "FDR level                          : ${params.fdr}"
   log.info ""
 } else if(params.mode == "permuted"){
   log.info 'Additional parameters for mode = permuted'
   log.info '-----------------------------------------'
   log.info "Genes/batch in permuted pass       : ${params.kp}"
   log.info "Max. number of permutations        : ${params.max_perm}"
-  log.info "FDR level                          : ${params.fdr}"
   log.info ""
 }
 
