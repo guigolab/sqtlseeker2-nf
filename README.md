@@ -126,7 +126,7 @@ Output files contain the following information:
 * nb.groups: number of genotype groups
 * md: maximum difference in relative expression between genotype groups (sQTL effect size)
 * tr.first/tr.second: the transcript IDs of the two transcripts that change the most, in opposite directions
-* info: number of individuals in each genotype group, including missing values (-1:0:1:2)
+* info: number of individuals in each genotype group, including missing values (-1,0,1,2)
 * pv: nominal P-value
 
 if `--svqtl true`
@@ -135,7 +135,7 @@ if `--svqtl true`
 * pv.svQTL: svQTL nominal P-value 
 
 if `--ld ${r2}`
-* LD: other snps in linkage disequilibrium with *snpId* above a given r<sup>2</sup> threshold
+* LD: other snps in linkage disequilibrium with *snpId* above a given r<sup>2</sup> threshold > 0
 
 `sqtls-${level}fdr.nominal.tsv` (in addition to the previous)
 
