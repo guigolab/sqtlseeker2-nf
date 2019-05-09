@@ -23,8 +23,8 @@
 
 // Define parameters (test run)
 
-params.genotype = "data/snps-012coded.tsv.gz"
-params.trexp = "data/transExpression.tsv.gz"
+params.genotype = "data/genotypes.tsv.gz"
+params.trexp = "data/texpression.tsv.gz"
 params.metadata = "data/metadata.tsv"
 params.genes = "data/genes.bed"
 params.dir = "result"
@@ -37,7 +37,7 @@ params.covariates = false
 params.kn = 10
 params.kp = 1
 params.fdr = 0.05
-params.svqtl = false
+params.svqtl = true
 params.ld = 0
 params.min_md = 0.05
 params.max_perm = 1000 
