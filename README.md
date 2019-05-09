@@ -5,7 +5,7 @@
 
 A pipeline for splicing quantitative trait loci (sQTL) mapping written in the Nextflow DSL.
 
-The pipeline performs the following analyses steps:
+The pipeline performs the following analysis steps:
 
 * Index the genotype file
 * Preprocess the transcript expression data
@@ -59,23 +59,22 @@ Options:
 --dir DIRECTORY             the output directory
 --mode MODE                 the run mode: nominal or permuted (default: nominal)
 --covariates COVARIATES     include covariates in the model (default: false)
+--fdr FDR                   false discovery rate level (default: 0.05)
 --min_md MIN_MD             minimum effect size reported (default: 0.05)
 --svqtl SVQTLS              report svQTLs (default: false)
 
 Additional parameters for mode = nominal:
 --ld LD                     threshold for LD-based variant clustering (default: 0, no clustering)
 --kn KN                     number of genes per batch in nominal pass (default: 10)
---fdr FDR                   False Discovery Rate (default: 0.05)
 
-Additional parameters for mode = nominal:
+Additional parameters for mode = permuted:
 --kp KP                     number of genes per batch in permuted pass (default: 10)
 --max_perm MAX_PERM         maximum number of permutations (default: 1000)
---fdr FDR                   False Discovery Rate (default: 0.05)
 ```
 
 ## Input format
 
-sqtlseeker2-nf takes as input files the following:
+`sqtlseeker2-nf` takes as input files the following:
 
 * Genotype file
 * Transcript expression file
@@ -106,7 +105,7 @@ Note: if only a nominal pass was run, files `*.permuted.tsv` will not be present
 
 sqtlseeker2-nf is configured to run using the [Docker](https://www.docker.com/) container engine by default. See the included 
 [Dockerfile](docker/Dockerfile) for the configuration details. [Singularity](https://www.sylabs.io/singularity/) is also 
-supported, but changes in the nextflow configuration [file](nextflow.config) are required.
+supported, but changes in the Nextflow [configuration](nextflow.config) are required.
 
 In order to run the pipeline with Docker the following dependencies have to be met:
 
