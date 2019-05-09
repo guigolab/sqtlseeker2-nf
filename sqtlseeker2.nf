@@ -65,7 +65,7 @@ if (params.help) {
   log.info '--covariates COVARIATES     include covariates in the model (default: false)'
   log.info '--fdr FDR                   false discovery rate level (default: 0.05)'
   log.info '--min_md MIN_MD             minimum effect size reported (default: 0.05)'
-  log.info '--svqtl SVQTLS              report svQTLs (default: false)'
+  log.info '--svqtl SVQTLS              test for svQTLs (default: false)'
   log.info ''
   log.info 'Additional parameters for mode = nominal:'
   log.info '--ld LD                     threshold for LD-based variant clustering (default: 0, no clustering)'
@@ -108,7 +108,7 @@ log.info "Run mode                           : ${params.mode}"
 log.info "Covariates                         : ${params.covariates}"
 log.info "FDR level                          : ${params.fdr}"
 log.info "Min. effect size                   : ${params.min_md}"
-log.info "Report svQTLs                      : ${params.svqtl}"
+log.info "Test for svQTLs                    : ${params.svqtl}"
 log.info ""
 
 if(params.mode == "nominal"){
