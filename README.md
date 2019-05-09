@@ -121,33 +121,36 @@ Output files contain the following information:
 `all-tests.nominal.tsv`
 
 * geneId: gene name	
-* snpId: snp name
+* snpId: variant name
 * F: test statistic
 * nb.groups: number of genotype groups
-* md: sQTL effect size, the maximum difference in relative expression between genotype groups
-* tr.first: the transcript IDs of the two transcripts that change the most, in opposite directions
-* tr.second
-* info: number of individuals in each genotype group -1:0:1:2
+* md: maximum difference in relative expression between genotype groups (sQTL effect size)
+* tr.first/tr.second: the transcript IDs of the two transcripts that change the most, in opposite directions
+* info: number of individuals in each genotype group, including missing values (-1:0:1:2)
 * pv: nominal P-value
-* F.svQTL: test statistic for svQTLs (if `--svqtl true`)
-* nb.perms.svQTL: number of permutations for svQTLs (if	`--svqtl true`)
-* pv.svQTL: nominal P-value for svQTLs (if `--svqtl true`)
-* LD: other snps in linkage disequilibrium with snpId above a given r^2 threshold (if `--mode nominal` and `--ld >0`)
+
+if `--svqtl true`
+* F.svQTL: svQTL test statistic
+* nb.perms.svQTL: number of permutations for svQTL test
+* pv.svQTL: svQTL nominal P-value 
+
+if `--ld ${r2}`
+* LD: other snps in linkage disequilibrium with *snpId* above a given $r^2$ threshold
 
 `sqtls-${level}fdr.nominal.tsv` (in addition to the previous)
 
 * fdr: false discovery rate (computed across all nominal tests)
-* fdr.svQTL: the same for svQTLs
+* fdr.svQTL: svQTL FDR
 
 `all-tests.permuted.tsv`
 
 * geneId: gene name
 * variants.cis: number of variants tested in *cis*
-* LD: median linkage disequilibrium (r^2)
-* best.snp: id of the top variant
-* best.nominal.pv: pv of the top variant
+* LD: median linkage disequilibrium ($r^2$)
+* best.snp: ID of the top variant
+* best.nominal.pv: P-value of the top variant
 * shape1: first parameter value of the fitted beta distribution
-* shape2: second parameter value of the fitted beta distribution (it also gives the effective number of independent tests in the region)
+* shape2: second parameter value of the fitted beta distribution (effective number of independent tests in the region)
 * nb.perm: number of permutations
 * pv.emp.perm: empirical P-value, computed based on permutations
 * pv.emp.beta: empirical P-value, computed based on the fitted beta distribution
@@ -156,7 +159,7 @@ Output files contain the following information:
 `sqtls-${level}fdr.nominal.tsv` (in addition to the previous)
 
 * fdr: false discovery rate (computed across empirical P-values)
-* p_tn: threshold for nominal P-values
+* p_tn: gene-level threshold for nominal P-values
 
 
 ## Requirements
