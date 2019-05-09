@@ -135,7 +135,7 @@ if `--svqtl true`
 * pv.svQTL: svQTL nominal P-value 
 
 if `--ld ${r2}`
-* LD: other snps in linkage disequilibrium with *snpId* above a given $r^2$ threshold
+* LD: other snps in linkage disequilibrium with *snpId* above a given r<sup>2</sup> threshold
 
 `sqtls-${level}fdr.nominal.tsv` (in addition to the previous)
 
@@ -146,7 +146,7 @@ if `--ld ${r2}`
 
 * geneId: gene name
 * variants.cis: number of variants tested in *cis*
-* LD: median linkage disequilibrium ($r^2$)
+* LD: median linkage disequilibrium in the region (r<sup>2</sup>)
 * best.snp: ID of the top variant
 * best.nominal.pv: P-value of the top variant
 * shape1: first parameter value of the fitted beta distribution
