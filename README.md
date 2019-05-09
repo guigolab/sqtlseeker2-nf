@@ -72,26 +72,25 @@ Additional parameters for mode = permuted:
 --max_perm MAX_PERM         maximum number of permutations (default: 1000)
 ```
 
-## Input format
+## Input files and format
 
 `sqtlseeker2-nf` takes as input files the following:
 
-* Genotype file
+* **Genotype file.**
 Contains the genotype of each sample, coded as follows: 0 for REF/REF, 1 for REF/ALT, 2 for ALT/ALT, -1 for missing value.
 The first four columns should be: `chr`, `start`, `end` and `snpId`. This file needs to be sorted by coordinate.
 
-* Transcript expression file
+* **Transcript expression file.**
 Contains the expression of each transcript in each sample (e.g. read counts, RPKM, TPM)
 It is not recommended to use transformed (log, quantile, or any non-linear transformation) expression.
 Column `trId` and `geneId`, corresponding to the transcript and gene IDs are required. 
 
-* Metadata file
-Contains the covariate information for each sample. 
-In addition, it defines the groups or conditions for which the sQTL mapping will be performed.
+* **Metadata file.** Contains the covariate information for each sample. 
+In addition, it defines the groups or conditions for which sQTL mapping will be performed.
 The first columns should be: `indId`, `sampleId`, `group`, followed by the covariates.
 This file defines which samples will be tested.
 
-* Gene location file
+* **Gene location file.**
 Contains the location of each gene. Columns `chr`, `start`, `end` and `geneId` are required. 
 This file defines which genes will be tested.
 
