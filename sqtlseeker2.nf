@@ -33,6 +33,7 @@ params.dir = "result"
 // Define parameters
 
 params.mode = "nominal"
+params.win = 5000
 params.covariates = false
 params.kn = 10
 params.kp = 1
@@ -62,6 +63,7 @@ if (params.help) {
   log.info '--genes GENES_FILE          the gene location file' 
   log.info '--dir DIRECTORY             the output directory'
   log.info '--mode MODE                 the run mode: nominal or permuted (default: nominal)'
+  log.info '--win WINDOW		the cis window in bp (default: 5000)'
   log.info '--covariates COVARIATES     include covariates in the model (default: false)'
   log.info '--fdr FDR                   false discovery rate level (default: 0.05)'
   log.info '--min_md MIN_MD             minimum effect size reported (default: 0.05)'
@@ -105,6 +107,7 @@ log.info "Metadata file                      : ${params.metadata}"
 log.info "Gene location file                 : ${params.genes}"
 log.info "Output directory                   : ${params.dir}"
 log.info "Run mode                           : ${params.mode}"
+log.info "Cis window                         : ${params.win}"
 log.info "Covariates                         : ${params.covariates}"
 log.info "FDR level                          : ${params.fdr}"
 log.info "Min. effect size                   : ${params.min_md}"
@@ -232,7 +235,7 @@ process nominal_test {
     else
     """
     res=\$(echo $chunk | sed 's/_in/_out/')
-    sqtlseeker.R -t $tre_rdata -i $indexed_geno -l $chunk -c $cov_rdata --asympt --svqtl --ld ${params.ld} -o \$res
+    sqtlseeker.R -t $tre_rdata -i $indexed_geno -l $chunk -c $cov_rdata --asympt --svqtl --ld ${params.ld} --window ${params.win} -o \$res
 
     """
 }
@@ -278,7 +281,7 @@ if (params.mode == "permuted") {
         script:
         """
         res=\$(echo $chunk | sed 's/_in/_out/')
-        sqtlseeker.p.R -t $tre_rdata -i $indexed_geno -l $chunk -c $cov_rdata -M ${params.max_perm} -o \$res
+        sqtlseeker.p.R -t $tre_rdata -i $indexed_geno -l $chunk -c $cov_rdata -M ${params.max_perm} --window ${params.win} -o \$res
 
         """
     }    
