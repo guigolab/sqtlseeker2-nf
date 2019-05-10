@@ -58,6 +58,7 @@ Options:
 --genes GENES_FILE          the gene location file
 --dir DIRECTORY             the output directory
 --mode MODE                 the run mode: nominal or permuted (default: nominal)
+--win WINDOW                the cis window in bp (default: 5000)
 --covariates COVARIATES     include covariates in the model (default: false)
 --fdr FDR                   false discovery rate level (default: 0.05)
 --min_md MIN_MD             minimum effect size reported (default: 0.05)
