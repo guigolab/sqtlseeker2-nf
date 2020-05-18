@@ -8,7 +8,7 @@ case "$1" in
   run)
     shift
     echo "Running test pipeline..." >&2
-    nextflow run . -resume --dir ${OUT_DIR} $@
+    nextflow run . -resume -with-docker --dir ${OUT_DIR} $@
     ;;
   validate)
     echo "Validating test results..." >&2
