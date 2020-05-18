@@ -19,13 +19,13 @@ The pipeline uses [Nextflow](http://www.nextflow.io) as the execution backend. P
 
 ## Requirements
 
-- Unix-like operationg system (Linux, MacOS, etc.)
+- Unix-like operating system (Linux, MacOS, etc.)
 - Java 8 
 - [Docker](https://www.docker.com/) or [Singularity](http://singularity.lbl.gov) engine
 
 ## Quickstart
 
-1. Install nextflow:
+1. Install Nextflow:
     ```
     curl -fsSL get.nextflow.io | bash
     ```
@@ -39,7 +39,7 @@ The pipeline uses [Nextflow](http://www.nextflow.io) as the execution backend. P
 
 ## Pipeline usage
 
-Launching the pipeline with the `--help ` parameter shows the help message:
+Launching the pipeline with the `--help` parameter shows the help message:
 
 ```
 nextflow run sqtlseeker2-nf --help
@@ -87,9 +87,9 @@ Contains the genotype of each sample, coded as follows: 0 for REF/REF, 1 for REF
 The first four columns should be: `chr`, `start`, `end` and `snpId`. This file needs to be sorted by coordinate.
 
 * **Transcript expression file.**
-Contains the expression of each transcript in each sample (e.g. read counts, RPKM, TPM)
+Contains the expression of each transcript in each sample (e.g. read counts, RPKM, TPM).
 It is not recommended to use transformed (log, quantile, or any non-linear transformation) expression.
-Column `trId` and `geneId`, corresponding to the transcript and gene IDs are required. 
+Columns `trId` and `geneId`, corresponding to the transcript and gene IDs, are required. 
 
 * **Metadata file.** Contains the covariate information for each sample. 
 In addition, it defines the groups or conditions for which sQTL mapping will be performed.
@@ -104,7 +104,7 @@ Example [data](data) is available for the test run.
 
 ## Pipeline results
 
-sQTL mapping results are saved into the folder specified with the `--dir` parameter. By default it is the `result` directory within the current working folder.
+sQTL mapping results are saved into the folder specified with the `--dir` parameter. By default it is the `result` folder within the current working directory.
 
 Output files are organinzed into subfolders corresponding to the different `groups` specified in the metadata file: 
 
@@ -141,7 +141,7 @@ if `--svqtl true`
 * pv.svQTL: svQTL nominal P-value 
 
 if `--ld ${r2}`
-* LD: other snps in linkage disequilibrium with *snpId* above a given r<sup>2</sup> threshold > 0
+* LD: other variants in linkage disequilibrium with snpId above a given r<sup>2</sup> threshold > 0
 
 `sqtls-${level}fdr.nominal.tsv` (in addition to the previous)
 
