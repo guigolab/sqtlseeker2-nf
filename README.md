@@ -3,7 +3,7 @@
 [![nextflow](https://img.shields.io/badge/nextflow-%E2%89%A50.27.0-blue.svg)](http://nextflow.io)
 [![Build Status](https://travis-ci.org/dgarrimar/sqtlseeker2-nf.svg?branch=master)](https://travis-ci.org/dgarrimar/sqtlseeker2-nf)
 
-A pipeline for splicing quantitative trait loci (sQTL) mapping written in the Nextflow DSL.
+A pipeline for splicing quantitative trait loci (sQTL) mapping.
 
 The pipeline performs the following analysis steps:
 
@@ -15,22 +15,27 @@ The pipeline performs the following analysis steps:
 
 For details on each step, please read [sQTLseekeR2](https://github.com/dgarrimar/sQTLseekeR2) documentation.
 
+The pipeline uses [Nextflow](http://www.nextflow.io) as the execution backend. Please check [Nextflow documentation](http://www.nextflow.io/docs/latest/index.html) for more information.
+
+## Requirements
+
+- Unix-like operationg system (Linux, MacOS, etc.)
+- Java 8 
+- [Docker](https://www.docker.com/) or [Singularity](http://singularity.lbl.gov) engine
+
 ## Quickstart
 
-Install nextflow with the following command:
+1. Install nextflow:
 ```
 curl -fsSL get.nextflow.io | bash
 ```
 
-Pull the docker image:
+2. Make a test run:
 ```
-docker pull dgarrimar/sqtlseeker2-nf@sha256:9ddae31aaf8f70f02cd24d3447f4fa3517494da87e12674484d25fe7cf3dc16b
+./nextflow run dgarrimar/sqtlseeker2-nf -with-docker
 ```
 
-Launch the test pipeline with the following command:
-```
-./nextflow run dgarrimar/sqtseeker2-nf
-```
+**Note**: set `-with-singularity` to use Singularity instead of Docker. 
 
 ## Pipeline usage
 
@@ -161,22 +166,3 @@ if `--ld ${r2}`
 
 * fdr: false discovery rate (computed across empirical P-values)
 * p_tn: gene-level threshold for nominal P-values
-
-
-## Requirements
-
-`sqtlseeker2-nf` is configured to run using the [Docker](https://www.docker.com/) container engine by default. See the included 
-[Dockerfile](docker/Dockerfile) for the configuration details. [Singularity](https://www.sylabs.io/singularity/) is also 
-supported, but changes in the Nextflow [configuration](nextflow.config) are required.
-
-In order to run the pipeline with Docker the following dependencies have to be met:
-
-* Java 7/8
-* [Nextflow](https://www.nextflow.io) 0.27.0 (or higher)
-* [Docker](https://www.docker.com/) 1.12.0 (or higher) 
-
-If you use Singularity:
-
-* [Singularity](https://www.sylabs.io/singularity/) 2.5.0 (or higher)
-
-The pipeline can also be used without Docker/Singularity by installing [sQTLseekeR2](https://github.com/dgarrimar/sQTLseekeR2) on your system.
