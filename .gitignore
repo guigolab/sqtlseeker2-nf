@@ -1,5 +1,4 @@
 work
 result
-singularity
 .nextflow*
-
+trace.txt*
