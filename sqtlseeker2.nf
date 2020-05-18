@@ -23,11 +23,11 @@
 
 // Define parameters (test run)
 
-params.genotype = "data/genotypes.tsv.gz"
-params.trexp = "data/texpression.tsv.gz"
-params.metadata = "data/metadata.tsv"
-params.genes = "data/genes.bed"
-params.dir = "result"
+params.genotype = "$baseDir/data/genotypes.tsv.gz"
+params.trexp = "$baseDir/data/texpression.tsv.gz"
+params.metadata = "$baseDir/data/metadata.tsv"
+params.genes = "$baseDir/data/genes.bed"
+params.dir = "$baseDir/result"
 
 
 // Define parameters
