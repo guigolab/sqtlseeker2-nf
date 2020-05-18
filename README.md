@@ -21,7 +21,7 @@ The pipeline uses [Nextflow](http://www.nextflow.io) as the execution backend. P
 
 - Unix-like operating system (Linux, MacOS, etc.)
 - Java 8 or later 
-- [Docker](https://www.docker.com/) (v1.10.0 or later) or [Singularity](http://singularity.lbl.gov) (v2.5.0 or later) engine
+- [Docker](https://www.docker.com/) (v1.10.0 or later) or [Singularity](http://singularity.lbl.gov) (v2.5.0 or later)
 
 ## Quickstart (~2 min)
 
