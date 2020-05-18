@@ -26,16 +26,16 @@ The pipeline uses [Nextflow](http://www.nextflow.io) as the execution backend. P
 ## Quickstart
 
 1. Install nextflow:
-```
-curl -fsSL get.nextflow.io | bash
-```
+    ```
+    curl -fsSL get.nextflow.io | bash
+    ```
 
 2. Make a test run:
-```
-./nextflow run dgarrimar/sqtlseeker2-nf -with-docker
-```
+    ```
+    ./nextflow run dgarrimar/sqtlseeker2-nf -with-docker
+    ```
 
-**Note**: set `-with-singularity` to use Singularity instead of Docker. 
+    **Note**: set `-with-singularity` to use Singularity instead of Docker. 
 
 ## Pipeline usage
 
