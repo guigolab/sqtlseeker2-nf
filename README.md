@@ -1,7 +1,7 @@
 # sqtlseeker2-nf
 
 [![nextflow](https://img.shields.io/badge/nextflow-%E2%89%A50.27.0-blue.svg)](http://nextflow.io)
-[![Build Status](https://travis-ci.org/dgarrimar/sqtlseeker2-nf.svg?branch=master)](https://travis-ci.org/dgarrimar/sqtlseeker2-nf)
+[![Build Status](https://travis-ci.com/guigolab/sqtlseeker2-nf.svg?branch=master)](https://travis-ci.com/guigolab/sqtlseeker2-nf)
 
 A pipeline for splicing quantitative trait loci (sQTL) mapping.
 
@@ -13,7 +13,7 @@ The pipeline performs the following analysis steps:
 * Obtain an empirical P-value for each phenotype (permutation pass, optional)
 * Control for multiple testing 
 
-For details on each step, please read [sQTLseekeR2](https://github.com/dgarrimar/sQTLseekeR2) documentation.
+For details on each step, please read [sQTLseekeR2](https://github.com/guigolab/sQTLseekeR2) documentation.
 
 The pipeline uses [Nextflow](http://www.nextflow.io) as the execution backend. Please check [Nextflow documentation](http://www.nextflow.io/docs/latest/index.html) for more information.
 
@@ -32,7 +32,7 @@ The pipeline uses [Nextflow](http://www.nextflow.io) as the execution backend. P
 
 2. Make a test run:
     ```
-    ./nextflow run dgarrimar/sqtlseeker2-nf -with-docker
+    ./nextflow run guigolab/sqtlseeker2-nf -with-docker
     ```
 
     **Note**: set `-with-singularity` to use Singularity instead of Docker. 

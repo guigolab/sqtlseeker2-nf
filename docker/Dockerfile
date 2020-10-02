@@ -1,8 +1,8 @@
 FROM debian:stable
 
 LABEL maintainer "Diego Garrido-Martín <diego.garrido@crg.eu>" \
-      version "1.0" \
-      description "sqtlseeker2-nf"
+      version "1.0.0" \
+      description "Docker image for sqtlseeker2-nf"
 
 # Install needed tools
 RUN apt-get update --fix-missing -qq && apt-get install -y -q \
@@ -17,5 +17,5 @@ RUN apt-get update --fix-missing -qq && apt-get install -y -q \
 
 RUN R -e 'install.packages(c("devtools", "optparse"), repos="http://cloud.r-project.org/"); \
           source("https://bioconductor.org/biocLite.R"); \
-          devtools::install_github("dgarrimar/sQTLseekeR2")'
+          devtools::install_github("guigolab/sQTLseekeR2")'
 
