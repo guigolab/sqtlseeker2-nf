@@ -5,7 +5,7 @@
 ## 1. Load libraries and arguments
 
 library(optparse)
-library(sQTLseekeR2)
+library(sQTLseekeR2.int)
 
 option_list <- list(
     make_option(c("-t", "--transcript_expr"), type = "character",
@@ -17,6 +17,9 @@ option_list <- list(
     make_option(c("-c", "--covariates"), type = "character", 
                 help = "file of covariates to regress out before testing", 
                 metavar = "FILE"),
+    make_option(c("-C", "--condition"), type = "character", 
+                help = "name of the 'condition' covariate", 
+                metavar = "CHARACTER", default = NULL),
     make_option(c("-o", "--output_file"), type = "character", help = "output file", 
                 metavar = "FILE"),
     make_option(c("-a", "--asympt"), action = "store_true", 
@@ -55,7 +58,6 @@ opt_parser <- OptionParser(option_list = option_list)
 opt <- parse_args(opt_parser)
 
 ## 2. Input files: prepared transcript expression, genotypes (indexed) and gene location (chunk) 
-
 trans.expr.p.f <- opt$transcript_expr
 indexed.geno.f <- opt$indexed_geno
 gene.loc.chunk <- opt$gene_location
@@ -67,8 +69,14 @@ if(opt$ld == 0){
     LD <- opt$ld
 }
 
+if(opt$condition == "-"){
+  COND <- NULL
+}else{
+  COND <- opt$condition
+}
+
 if ( is.null(trans.expr.p.f) || is.null (indexed.geno.f) || 
-     is.null(gene.loc.chunk) || is.null (output.f) ){
+     is.null(gene.loc.chunk) || is.null (output.f)){
     print_help(opt_parser)
     stop("Missing/not found input files", call.= FALSE)
 }
@@ -85,6 +93,7 @@ load(covariates.f)                                                              
 set.seed(opt$seed)
 res.df <- sqtl.seeker(tre.df, indexed.geno.f, genes.bed,
                       covariates = covariates.df,
+                      condition = COND,
                       genic.window = opt$window,
                       min.nb.ext.scores = opt$min_nb_ext_scores,
                       nb.perm.max = opt$nb_perm_max,
@@ -93,22 +102,17 @@ res.df <- sqtl.seeker(tre.df, indexed.geno.f, genes.bed,
                       min.nb.ind.geno = opt$min_nb_ind_geno,
                       ld.filter = LD, verbose = opt$verbose)
 
+## 5. Manage column names (WARNING: only for interaction analyses)
+
 if (output.f == "nominal_out.1"){
     if(is.null(res.df)){
-        if(opt$asympt){
-            colnms <- c("geneId", "snpId", "F", "nb.groups", "md", 
-                        "tr.first", "tr.second", "info", "pv")
-            if(opt$svqtl){
-              colnms <- c(colnms, c("F.svQTL", "nb.perms.svQTL", "pv.svQTL"))
-            }
-        } else {
-            colnms <- c("geneId", "snpId", "F", "nb.groups", "md", 
-                        "tr.first", "tr.second", "info", "nb.perms","pv")
-            if(opt$svqtl){
-              colnms <- c("geneId", "snpId", "F", "nb.groups", "md",
-                          "tr.first", "tr.second", "info", "F.svQTL", 
-                          "nb.perms", "pv", "nb.perms.svQTL", "pv.svQTL")
-            }
+        colnms <- c("geneId", "snpId", "F_snp", "F_cond", "F_snpXcond", 
+                    "pv_snp", "pv_cond", "pv_snpXcond", "nb.groups", 
+                    "md_snp", "tr.first_snp", "tr.second_snp", 
+                    "md_cond_l1", "md_cond_l2", "tr.agree",
+                    "info_snp", "info_cond", "info_snpXcond")
+        if(opt$svqtl){
+            colnms <- c(colnms, c("F.svQTL", "nb.perms.svQTL", "pv.svQTL"))
         }
         if(!is.null(LD)){
             colnms <- c(colnms, "LD")

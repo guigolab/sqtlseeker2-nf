@@ -5,7 +5,7 @@
 ## 1. Load libraries and arguments
 
 library(optparse)
-library(sQTLseekeR2)
+library(sQTLseekeR2.int)
 
 option_list <- list(
     make_option(c("-g", "--genotype_file"), type = "character",

@@ -6,7 +6,7 @@
 
 library(optparse)
 library(data.table)
-library(sQTLseekeR2)
+library(sQTLseekeR2.int)
   
 option_list <- list(
     make_option(c("-g", "--group"), type = "character", 
@@ -31,11 +31,11 @@ option_list <- list(
     make_option(c("-d", "--min_dispersion"), type = "numeric", default = 0.1,
                 help = "minimum dispersion of transcript relative expression. [default %default]", 
                 metavar = "NUMERIC"),
-    make_option(c("-o1", "--output_tre"), type = "character",
+    make_option(c("-O", "--output_tre"), type = "character",
                 help = "preprocessed transcript expression file", metavar = "FILE"),
-    make_option(c("-o2", "--output_gene"), type = "character",
+    make_option(c("-L", "--output_gene"), type = "character",
                 help = "updated gene location file", metavar = "FILE"),
-    make_option(c("-o3", "--output_cov"), type = "character",
+    make_option(c("-C", "--output_cov"), type = "character",
                 help = "prepared covariate file", metavar = "FILE"),
     make_option(c("-s", "--seed"), type = "numeric", help = "Set seed for random processess",
                 metavar = "NUMERIC", default = 123),
