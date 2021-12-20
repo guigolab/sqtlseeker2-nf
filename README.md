@@ -166,3 +166,10 @@ if `--ld ${r2}`
 
 * fdr: false discovery rate (computed across empirical P-values)
 * p_tn: gene-level threshold for nominal P-values
+
+## Cite sqtlseeker2-nf
+
+If you find `sqtlseeker2-nf` useful in your research please cite the related publication:
+
+Garrido-Martín, D., Borsari, B., Calvo, M., Reverter, F., Guigó, R. Identification and analysis of splicing quantitative trait loci across multiple tissues in the human genome. *Nat Commun* 12, 727 (2021). [https://doi.org/10.1038/s41467-020-20578-2](https://doi.org/10.1038/s41467-020-20578-2)
+
