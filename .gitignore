@@ -2,3 +2,4 @@ work
 result
 .nextflow*
 trace.txt*
+docker/.docker
