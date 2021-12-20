@@ -9,6 +9,7 @@ case "$1" in
     shift
     echo "Running test pipeline..." >&2
     nextflow run . -resume -with-docker --dir ${OUT_DIR} $@
+    md5sum ${OUT_DIR}/*/*/*
     ;;
   validate)
     echo "Validating test results..." >&2

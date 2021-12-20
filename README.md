@@ -1,7 +1,7 @@
 # sqtlseeker2-nf
 
 [![nextflow](https://img.shields.io/badge/nextflow-%E2%89%A50.27.0-blue.svg)](http://nextflow.io)
-[![Build Status](https://travis-ci.com/guigolab/sqtlseeker2-nf.svg?branch=master)](https://travis-ci.com/guigolab/sqtlseeker2-nf)
+[![CI-checks](https://github.com/guigolab/sqtlseeker2-nf/actions/workflows/ci.yaml/badge.svg)](https://github.com/guigolab/sqtlseeker2-nf/actions/workflows/ci.yaml)
 
 A pipeline for splicing quantitative trait loci (sQTL) mapping.
 

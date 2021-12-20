@@ -1,0 +1,26 @@
+on:
+  push:
+    branches: [main, master, dev]
+  pull_request:
+    branches: [main, master]
+
+name: CI-checks
+
+jobs:
+  CI-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Java
+        uses: actions/setup-java@v1
+        with:
+            java-version: 11.0.4
+
+      - name: Install Nextflow
+        run: curl -fsSL get.nextflow.io | bash && mv nextflow /usr/local/bin
+      
+      - name: Run CI checks
+        run: ./ci/ci.sh run && ./ci/ci.sh validate 
+        
