@@ -57,21 +57,21 @@ if (params.help) {
   log.info '--trexp EXPRESSION_FILE     the transcript expression file'
   log.info '--metadata METADATA_FILE    the metadata file'
   log.info '--genes GENES_FILE          the gene location file' 
-  log.info '--dir DIRECTORY             the output directory'
-  log.info '--mode MODE                 the run mode: nominal or permuted (default: nominal)'
-  log.info '--win WINDOW		the cis window in bp (default: 5000)'
-  log.info '--covariates COVARIATES     include covariates in the model (default: false)'
-  log.info '--fdr FDR                   false discovery rate level (default: 0.05)'
-  log.info '--min_md MIN_MD             minimum effect size reported (default: 0.05)'
-  log.info '--svqtl SVQTLS              test for svQTLs (default: false)'
+  log.info "--dir DIRECTORY             the output directory (default: $params.dir)"
+  log.info "--mode MODE                 the run mode: nominal or permuted (default: $params.mode)"
+  log.info "--win WINDOW		the cis window in bp (default: $params.win)"
+  log.info "--covariates COVARIATES     include covariates in the model (default: $params.covariates)"
+  log.info "--fdr FDR                   false discovery rate level (default: $params.fdr)"
+  log.info "--min_md MIN_MD             minimum effect size reported (default: $params.min_md)"
+  log.info "--svqtl SVQTLS              test for svQTLs (default: $params.svqtl)"
   log.info ''
   log.info 'Additional parameters for mode = nominal:'
-  log.info '--ld LD                     threshold for LD-based variant clustering (default: 0, no clustering)'
-  log.info '--kn KN                     number of genes per batch in nominal pass (default: 10)'
+  log.info "--ld LD                     threshold for LD-based variant clustering (default: $params.ld, no clustering)"
+  log.info "--kn KN                     number of genes per batch in nominal pass (default: $params.kn)"
   log.info ''
   log.info 'Additional parameters for mode = permuted:'
-  log.info '--kp KP                     number of genes per batch in permuted pass (default: 10)'
-  log.info '--max_perm MAX_PERM         maximum number of permutations (default: 1000)'
+  log.info "--kp KP                     number of genes per batch in permuted pass (default: $params.kp)"
+  log.info "--max_perm MAX_PERM         maximum number of permutations (default: $params.max_perm)"
   log.info ''
   exit 1
 }
