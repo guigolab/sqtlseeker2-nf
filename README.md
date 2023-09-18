@@ -37,6 +37,8 @@ The pipeline uses [Nextflow](http://www.nextflow.io) as the execution backend. P
 
     **Note**: set `-with-singularity` to use Singularity instead of Docker. 
 
+    **Important**: Since release `22.12.0-edge`, DSL1 is not further supported in Nextflow. Until `sqtlseeker2-nf` is migrated to DSL2, the pipeline should be run using an older Nextflow release. This can be done using `NXF_VER` before Nextflow commands, e.g. `NXF_VER=22.04.0 ./nextflow run guigolab/sqtlseeker2-nf -with-docker`.
+
 ## Pipeline usage
 
 Launching the pipeline with the `--help` parameter shows the help message:
